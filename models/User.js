@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require("sequilize");
 const sequelize = require("../config/connection");
-const { v4: uuidv4 } = require("uuid");
 
 class User extends Model {};
 
@@ -27,6 +26,13 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
             validate: { len: [8] }
+        },
+        habit_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: "habit",
+                key: "id"
+            }
         }
     },
     {
@@ -34,7 +40,7 @@ User.init(
         timestamps: false,
         freezeTableName: true,
         uderscored: true,
-        modelName: 'user'
+        modelName: "user"
     }
 );
 
