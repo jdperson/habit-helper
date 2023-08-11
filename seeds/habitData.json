@@ -15,6 +15,9 @@
     "name": "Unhealthy Eating"
   },
   {
+    "name": "Skipping Meals"
+  },
+  {
     "name": "Negative Self-Talk"
   },
   {
@@ -25,6 +28,9 @@
   },
   {
     "name": "Overspending"
+  },
+  {
+    "name": "Being Chronically Late"
   },
   {
     "name": "Interrupting Others"
@@ -113,5 +119,4 @@
   {
     "name": "Financial Planning"
   }
-
 ]
