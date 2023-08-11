@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequilize");
-const sequelize = require("../config/connection");
+const { Model, DataTypes } = require('sequilize');
+const sequelize = require('../config/connection');
 
 class Tip extends Model {};
 
@@ -18,8 +18,8 @@ Tip.init(
         habit_id: {
             type: DataTypes.INTEGER,
             references: {
-                model: "habit",
-                key: "id"
+                model: 'habit',
+                key: 'id'
             }
         }
     },
@@ -28,7 +28,7 @@ Tip.init(
         timestamps: false,
         freezeTableName: true,
         uderscored: true,
-        modelName: "tip"
+        modelName: 'tip'
     }
 );
 

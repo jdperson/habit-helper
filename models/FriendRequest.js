@@ -1,14 +1,34 @@
-const { Model, DataTypes } = require("sequilize");
-const sequelize = require("../config/connection");
+const { Model, DataTypes } = require('sequilize');
+const sequelize = require('../config/connection');
 
 class FriendRequest extends Model {};
 
 FriendRequest.init(
     {
-        status: {
-            type: DataTypes.ENUM("pending", "accepted"),
+        id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: "pending"
+            primaryKey: true,
+            autoIncrement: true
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'user',
+                key: 'id'
+            }
+        },
+        other_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'user',
+                key: 'id'
+            }
+        },
+        requestStatus: {
+            type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+            allowNull: false,
+            defaultValue: 'pending'
         }
     },
     {
@@ -16,7 +36,7 @@ FriendRequest.init(
         timestamps: true,
         freezeTableName: true,
         underscored: true,
-        modelName: "friend_request"
+        modelName: 'friend_request'
     }
 );
 

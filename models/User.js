@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require("sequilize");
-const sequelize = require("../config/connection");
+const { Model, DataTypes } = require('sequilize');
+const sequelize = require('../config/connection');
 
 class User extends Model {};
 
@@ -30,9 +30,14 @@ User.init(
         habit_id: {
             type: DataTypes.INTEGER,
             references: {
-                model: "habit",
-                key: "id"
+                model: 'habit',
+                key: 'id'
             }
+        },
+        status: {
+            type: DataTypes.ENUM('offline', 'online'),
+            allowNull: false,
+            defaultValue: 'offline'
         }
     },
     {
@@ -40,7 +45,7 @@ User.init(
         timestamps: false,
         freezeTableName: true,
         uderscored: true,
-        modelName: "user"
+        modelName: 'user'
     }
 );
 
