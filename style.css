@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+  }
+  
+  header {
+    background: #333;
+    color: #fff;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;  
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1em;
+  }
+  
+  h1 {
+    margin: 0;
+  }
+  
+  #hero {
+    padding: 2em;
+    background: #0076ff;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .cta-button {
+    background: #fff;
+    color: #333;
+    padding: 1em 2em;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  
+  #features {
+    padding: 4em 1em;
+    text-align: center;
+  }
+  
+  .feature-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2em;  
+  }
+  
+  .card {
+    width: 30%;
+    background: #f2f2f2;
+    padding: 2em;
+    border-radius: 4px;
+  }
+  
+  footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 2em;
+  }
+  
+  @media (max-width: 600px) {
+    .feature-cards {
+      flex-direction: column;
+    }
+    
+    .card {
+      width: 100%;
+      margin-bottom: 1em;
+    }
+  }
