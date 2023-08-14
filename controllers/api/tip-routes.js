@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const { Tip, Habit } = require('../../models');
+const withAuth = require('../../utils/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', withAuth,  async (req, res) => {
   try {
     const tipData = await Tip.findAll({
       include: [{ model: Habit, as: 'habit' }]
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', withAuth, async (req, res) => {
   try {
     const tipData = await Tip.findByPk(req.params.id, {
       include: [{ model: Habit, as: 'habit' }]
