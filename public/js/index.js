@@ -1,7 +1,6 @@
 // ================== IMPORTS ==================
 
 const User = require('../../models/User');
-const { Configuration, OpenAIApi } = require('openai');
 
 // =============================================
 
