@@ -1,6 +1,7 @@
 // ================== IMPORTS ==================
 
 const User = require('../../models/User');
+const { Configuration, OpenAIApi } = require('openai');
 
 // =============================================
 
@@ -16,6 +17,8 @@ const addFriendBtn = document.getElementsByClassName('add-friend-btn');
 
 
 // ================== GLOBAL VARS ==================
+
+const gptURL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
 // =================================================
 
@@ -40,7 +43,29 @@ async function populateFriends(user) {
     } catch (err) {
         console.log('Error retrieving friends', err);
     }
-}
+};
+
+async function getChatResponse(prompt) {
+    try {
+        const response = await fetch(gptURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                max_tokens: 250
+            })
+        });
+
+        const responseData = await response.json();
+        return responseData.choices[0].text;
+    } catch (err) {
+        console.error(err);
+        return 'Error fetching chat response.';
+    }
+};
 
 // ===============================================
 
