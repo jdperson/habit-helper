@@ -1,6 +1,20 @@
 const router = require('express').Router();
 const FriendRequest = require('../../models/FriendRequest');
 
+router.get('/', async (req, res) => {
+    // Find all friend requests where another user has added this user
+    try {
+        const friendRequests = await FriendRequest.findAll({
+            where: { other_id: req.body.id }
+        });
+
+        return res.status(200).json(friendRequests);
+    } catch (err) {
+        console.error('Error retrieving friend requests:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
 router.post('/addFriend', async (req, res) => {
     const { user_id, other_id } = req.body;
   
