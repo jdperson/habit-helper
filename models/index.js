@@ -40,4 +40,4 @@ Habit.hasMany(Tip, {
 
 Tip.belongsTo(Habit, { foreignKey: 'habit_id' });
 
-module.exports = User;
+module.exports = { User, Habit, Tip };

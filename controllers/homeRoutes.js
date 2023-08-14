@@ -9,15 +9,15 @@ router.get('/profile/', withAuth, async (req, res) => {
       include: [{ model: Tip, as: 'tip' }]
     });
 
-const habits = habitData.map((habit) => habit.get({ plain: true }));
+    const habits = habitData.map((habit) => habit.get({ plain: true }));
 
-res.render('profile', { 
-  habits, 
-  logged_in: req.session.logged_in 
-});
-} catch (err) {
-res.status(500).json(err);
-}
+    res.render('profile', { 
+      habits, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.get('/profile/:id', withAuth, async (req, res) => {
@@ -28,13 +28,13 @@ router.get('/profile/:id', withAuth, async (req, res) => {
 
     const habit = habitData.map((habit) => habit.get({ plain: true }));
 
-res.render('profile', { 
-  habit, 
-  logged_in: req.session.logged_in 
-});
-} catch (err) {
-res.status(500).json(err);
-}
+    res.render('profile', { 
+      habit, 
+      logged_in: req.session.logged_in 
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.get('/profile/', withAuth,  async (req, res) => {
@@ -48,9 +48,9 @@ router.get('/profile/', withAuth,  async (req, res) => {
       tips, 
       logged_in: req.session.logged_in 
     });
-    } catch (err) {
+  } catch (err) {
     res.status(500).json(err);
-    }
+  }
 });
 
 router.get('/profile/:id', withAuth, async (req, res) => {
@@ -65,9 +65,9 @@ router.get('/profile/:id', withAuth, async (req, res) => {
       tip, 
       logged_in: req.session.logged_in 
     });
-    } catch (err) {
+  } catch (err) {
     res.status(500).json(err);
-    }
+  }
 });
 
 router.get('/profile', withAuth, async (req, res) => {
