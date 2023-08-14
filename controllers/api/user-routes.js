@@ -1,6 +1,39 @@
 const router = require('express').Router();
 const User = require('../../models/User');
 
+router.get('/', async (req, res) => {
+  try {
+    const userData = await User.findAll({
+      include: [{ model: User, as: 'user' }]
+    });
+    res.status(200).json(userData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const userData = await User.findByPk(req.params.id, {
+      include: [{ model: User, as: 'user' }]
+    });
+
+    res.json(200).json(userData);
+  } catch (err) {
+    res.json(404).json({ message: 'User not found' });
+  }
+});
+
+router.get('/:username', async (req, res) => {
+  try {
+    const userData = await User.findOne({ where: { username: req.params.username }});
+
+    res.json(200).json(userData);
+  } catch (err) {
+    res.json(404).json({ message: 'User not found' });
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const userData = await User.create(req.body);
