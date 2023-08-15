@@ -40,7 +40,7 @@ async function populateFriends(user) {
                 }
             }
 
-            // Display all incoming pending requests to requests list
+            // Display all incoming 'pending' requests to requests list
             // check for a pending response where another user has sent the request to this user
             
             if ( (response[i].requestStatus === 'pending') && (response[i].other_id === user.id) ) {
