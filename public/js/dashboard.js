@@ -1,37 +1,3 @@
-// ================== IMPORTS ==================
-
-const User = require('../../models/User');
-
-// =============================================
-
-
-
-// ================== PAGE ELEMENTS ==================
-
-const loginBtn = document.getElementById('login-btn');
-const addFriendBtn = document.getElementById('add-friend-btn');
-const friendsList = document.getElementById('friends-list');
-const requestsList = document.getElementById('friend-request-list');
-const acceptBtns = docuement.getElementsByClassName('accept-btn');
-const rejectBtns = docuement.getElementsByClassName('reject-btn');
-const gptInput = document.getElementById('gpt-prompt-input').value.trim();
-const promptGPTbtn = document.getElementById('prompt-gpt-btn');
-const chatLog = document.getElementById('chat-log');
-
-// ===================================================
-
-
-
-// ================== GLOBAL VARS ==================
-
-const gptURL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-
-// =================================================
-
-
-
-// ================== FUNC DEFS ==================
-
 async function populateFriends(user) {
     try {
         const response = await fetch('api/friendRequest/', {
@@ -40,6 +6,7 @@ async function populateFriends(user) {
             body: JSON.stringify(user.id)
         });
 
+        
         for (i = 0; i < response.length; i++) {
 
             // Display all with status 'accepted' to the friends list
@@ -47,6 +14,8 @@ async function populateFriends(user) {
                 const friend = document.createElement('li');
                 const friendName = document.createElement('h4');
                 const friendStatus = document.createElement('p');
+
+                const friendsList = document.getElementById('friends-list');
 
                 // Determine which user sent the request, 
                 // then get the friend's username
@@ -73,6 +42,7 @@ async function populateFriends(user) {
 
             // Display all incoming pending requests to requests list
             // check for a pending response where another user has sent the request to this user
+            
             if ( (response[i].requestStatus === 'pending') && (response[i].other_id === user.id) ) {
                 const pendingRequest = document.createElement('li');
                 const requestUsername = document.createElement('h4');
@@ -90,6 +60,8 @@ async function populateFriends(user) {
 
                 acceptBtn.setAttribute('class', 'accept-btn');
                 rejectBtn.setAttribute('class', 'reject-btn');
+                
+                const requestsList = document.getElementById('friend-request-list');
 
                 pendingRequest.append(requestUsername, acceptBtn, rejectBtn);
                 requestsList.append(pendingRequest);
@@ -101,6 +73,8 @@ async function populateFriends(user) {
 };
 
 async function getGPTResponse(prompt) {
+    const gptURL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+
     try {
         const response = await fetch(gptURL, {
             method: 'POST',
@@ -122,38 +96,7 @@ async function getGPTResponse(prompt) {
     }
 };
 
-// ===============================================
-
-
-
-// ================== PROCEDURE ==================
-
-// ===============================================
-
-
-
-// ================== LISTENERS ==================
-
-loginBtn.addEventListener('submit', async (e) => {
-    try {
-        const response = await fetch('/api/users/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(email, password)
-        });
-        
-        // Send user to the dashboard, generate their tracking graph,
-        // and populate their friends list + friend requests
-
-        // window.location.replace('dashboard-link')
-        // generateGraph(response.user)
-        populateFriends(response.user);
-    } catch (err) {
-        console.log('Error logging in: ', err);
-    }
-});
-
-addFriendBtn.addEventListener('submit', async (e) => {
+const addFriendHandler = async (e) => {
     try {
         const newFriend = await fetch(`/api/users/${e.target.closest('input').textContent}`);
 
@@ -174,9 +117,9 @@ addFriendBtn.addEventListener('submit', async (e) => {
     } catch (err) {
         console.log(`Could not find user with name ${e.target.closest('input').textContent}`);
     }
-});
+};
 
-acceptBtns.addEventListener('submit', async (e) => {
+const acceptRequestHandler = async (e) => {
     const requesterUsername = e.target.closest('h4').textContent;
 
     const userData = await fetch(`/api/users/${requesterUsername}`);
@@ -189,9 +132,9 @@ acceptBtns.addEventListener('submit', async (e) => {
         const currUser = await fetch(`/api/users/${req.session.user_id}`);
         populateFriends(currUser);
     }
-});
+};
 
-rejectBtns.addEventListener('submit', async (e) => {
+const rejectRequestHandler = async (e) => {
     const requesterUsername = e.target.closest('h4').textContent;
 
     const userData = await fetch(`/api/users/${requesterUsername}`);
@@ -199,15 +142,17 @@ rejectBtns.addEventListener('submit', async (e) => {
     const isRejected = await fetch(`/api/friendRequest/reject/${userData.id}`);
 
     if (isRejected) { e.target.closest('li').remove(); }
-});
+};
 
-promptGPTbtn.addEventListener('submit', async (e) => {
+const gptHandler = async (e) => {
     // append user message to chat log
     const newPrompt = document.createElement('li');
     const promptText = document.createElement('p');
 
+    const gptInput = document.getElementById('gpt-prompt-input').value.trim();
     promptText = gptInput;
 
+    const chatLog = document.getElementById('chat-log');
     newPrompt.append(promptText);
     chatLog.append(newPrompt);
 
@@ -219,6 +164,20 @@ promptGPTbtn.addEventListener('submit', async (e) => {
 
     newResponse.append(responseText);
     chatLog.append(newResponse);
-});
+};
 
-// ===============================================
+document
+    .querySelector('add-friend-btn')
+    .addEventListener('submit', addFriendHandler);
+
+document
+    .querySelector('.accept-btn')
+    .addEventListener('submit', acceptRequestHandler);
+
+document
+    .querySelector('.reject-btn')
+    .addEventListener('submit', rejectRequestHandler);
+
+document
+    .querySelector('#prompt-gpt-btn')
+    .addEventListener('submit', gptHandler);
