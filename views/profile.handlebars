@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-auto">
+    {{!-- <h2>Welcome, {{name}}!</h2> --}}
+  </div>
+</div>
+
+  <div class="col-md-6 project-list">
+    <h3>Choose a habit:</h3>
+
+    {{#each habits as |habit|}}
+    <div class="row mb-2">
+      <div class="col-md-8">
+      </div>
+      <div class="col-md-4">
+      <ul>
+      <li><h4><a href="/profile/{{habit.id}}">{{habit.name}}</a></h4></li>
+      </ul> 
+      
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+    <p>{{>tips habit.tips}}</p>
+
+{{!-- <script src="./js/profile.js"></script> --}}

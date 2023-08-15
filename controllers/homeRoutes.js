@@ -74,6 +74,28 @@ router.get('/profile/:id', withAuth, async (req, res) => {
   }
 });
 
+router.get('/profile/:id', async (req, res) => {
+  try {
+    const habitData = await Habit.findByPk(req.params.id, {
+      include: [
+        {
+          model: Tip,
+          attributes: ['id', 'description', 'habit_id'],
+        }
+      ],
+    });
+
+    const habit = habitData.get({ plain: true });
+
+    res.render('profile', {
+      habit,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
 router.get('/profile', withAuth, async (req, res) => {
   try {
     // Find the logged in user based on the session ID
@@ -95,7 +117,14 @@ router.get('/profile', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 router.get('/login', (req, res) => {
+  // If the user is already logged in, redirect the request to another route
+  if (req.session.logged_in) {
+    res.redirect('/profile');
+    return;
+  }
+
   res.render('login');
 });
 
