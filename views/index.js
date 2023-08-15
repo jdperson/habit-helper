@@ -1,7 +1,6 @@
 // ================== IMPORTS ==================
 
 const User = require('../../models/User');
-const { Configuration, OpenAIApi } = require('openai');
 
 // =============================================
 
@@ -10,9 +9,11 @@ const { Configuration, OpenAIApi } = require('openai');
 // ================== PAGE ELEMENTS ==================
 
 const loginBtn = document.getElementById('login-btn');
-const addFriendBtn = document.getElementsByClassName('add-friend-btn');
+const addFriendBtn = document.getElementById('add-friend-btn');
 const friendsList = document.getElementById('friends-list');
 const requestsList = document.getElementById('friend-request-list');
+const acceptBtns = docuement.getElementsByClassName('accept-btn');
+const rejectBtns = docuement.getElementsByClassName('reject-btn');
 const gptInput = document.getElementById('gpt-prompt-input').value.trim();
 const promptGPTbtn = document.getElementById('prompt-gpt-btn');
 const chatLog = document.getElementById('chat-log');
@@ -84,6 +85,12 @@ async function populateFriends(user) {
                 acceptBtn.textContent = '+';
                 rejectBtn.textContent = '-';
 
+                acceptBtn.setAttribute('type', 'submit');
+                rejectBtn.setAttribute('type', 'submit');
+
+                acceptBtn.setAttribute('class', 'accept-btn');
+                rejectBtn.setAttribute('class', 'reject-btn');
+
                 pendingRequest.append(requestUsername, acceptBtn, rejectBtn);
                 requestsList.append(pendingRequest);
             }
@@ -129,7 +136,7 @@ async function getGPTResponse(prompt) {
 
 loginBtn.addEventListener('submit', async (e) => {
     try {
-        const response = await fetch('/api/user/login', {
+        const response = await fetch('/api/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(email, password)
@@ -148,7 +155,7 @@ loginBtn.addEventListener('submit', async (e) => {
 
 addFriendBtn.addEventListener('submit', async (e) => {
     try {
-        const newFriend = await fetch(`/api/user/${e.target.closest('input').textContent}`);
+        const newFriend = await fetch(`/api/users/${e.target.closest('input').textContent}`);
 
         if (newFriend) {
             try {
@@ -167,7 +174,31 @@ addFriendBtn.addEventListener('submit', async (e) => {
     } catch (err) {
         console.log(`Could not find user with name ${e.target.closest('input').textContent}`);
     }
-    
+});
+
+acceptBtns.addEventListener('submit', async (e) => {
+    const requesterUsername = e.target.closest('h4').textContent;
+
+    const userData = await fetch(`/api/users/${requesterUsername}`);
+
+    const isAccepted = await fetch(`/api/friendRequest/accept/${userData.id}`);
+
+    if (isAccepted) {
+        e.target.closest('li').remove();
+
+        const currUser = await fetch(`/api/users/${req.session.user_id}`);
+        populateFriends(currUser);
+    }
+});
+
+rejectBtns.addEventListener('submit', async (e) => {
+    const requesterUsername = e.target.closest('h4').textContent;
+
+    const userData = await fetch(`/api/users/${requesterUsername}`);
+
+    const isRejected = await fetch(`/api/friendRequest/reject/${userData.id}`);
+
+    if (isRejected) { e.target.closest('li').remove(); }
 });
 
 promptGPTbtn.addEventListener('submit', async (e) => {
