@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequilize');
+const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 class Tip extends Model {};
@@ -6,7 +6,7 @@ class Tip extends Model {};
 Tip.init(
     {
         id: {
-            type: DataTypess.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true

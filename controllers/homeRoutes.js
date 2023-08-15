@@ -3,6 +3,10 @@ const { Habit, Tip, User } = require('../models');
 const withAuth = require('../utils/auth');
 const sequelize = require('../config/connection');
 
+router.get('/', (req, res) => {
+  res.render('main');
+});
+
 router.get('/profile/', withAuth, async (req, res) => {
   try {
     const habitData = await Habit.findAll({
@@ -91,3 +95,5 @@ router.get('/profile', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+module.exports = router;
