@@ -44,8 +44,10 @@ router.put('/accept/:id', async (req, res) => {
             return res.status(404).json({ message: 'Friend request not found' });
         }
         res.status(200).json({ message: 'Friend request accepted' });
+        return true;
     } catch (err) {
         res.status(500).json(err);
+        return false;
     }
 });
 
@@ -59,11 +61,14 @@ router.put('/reject/:id', async (req, res) => {
         )
         
         if (result[0] === 0) {
-            return res.status(404).json({ message: 'Friend request not found' });
+            res.status(404).json({ message: 'Friend request not found' });
+            return false;
         }
         res.status(200).json({ message: 'Friend request rejected' });
+        return true;
     } catch (err) {
         res.status(500).json(err);
+        return false;
     }
 });
 
