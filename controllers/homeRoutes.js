@@ -4,7 +4,7 @@ const withAuth = require('../utils/auth');
 const sequelize = require('../config/connection');
 
 router.get('/', (req, res) => {
-  res.render('main');
+  res.render('homepage');
 });
 
 router.get('/profile/', withAuth, async (req, res) => {
@@ -95,5 +95,9 @@ router.get('/profile', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.get('/login', (req, res) => {
+  res.render('login');
+});
+
 
 module.exports = router;
