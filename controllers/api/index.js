@@ -4,7 +4,7 @@ const habitRoutes = require('./habit-routes');
 const tipRoutes = require('./tip-routes');
 const friendRequestRoutes = require('./friendRequest-routes');
 
-router.use('/user', userRoutes);
+router.use('/users', userRoutes);
 router.use('/habit', habitRoutes);
 router.use('/tip', tipRoutes);
 router.use('./friendRequest', friendRequestRoutes);

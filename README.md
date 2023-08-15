@@ -21,8 +21,5 @@ https://github.com/jdperson
 Colton Siegmund
 https://github.com/ColtonSiegmund
 
-Pablo Anchondo
-https://github.com/pabgit
-
 # Resources
 # Links
