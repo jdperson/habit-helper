@@ -27,13 +27,15 @@ const sess = {
     db: sequelize
     })
 };
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(session(sess));
 app.use(routes);
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 sequelize.sync({ force: false }).then(() => {
