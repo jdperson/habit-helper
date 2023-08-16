@@ -7,6 +7,6 @@ const friendRequestRoutes = require('./friendRequest-routes');
 router.use('/users', userRoutes);
 router.use('/habit', habitRoutes);
 router.use('/tip', tipRoutes);
-router.use('./friendRequest', friendRequestRoutes);
+router.use('/friendRequest', friendRequestRoutes);
 
 module.exports = router;
