@@ -26,14 +26,18 @@ router.get('/profile', async (req, res) => {
 router.get('/profile/:id', async (req, res) => {
   try {
     const habitData = await Habit.findByPk(req.params.id, {
-      include: [{ model: Tip, as: 'tips' }]
+      include: [
+        {
+          model: Tip,
+          attributes: ['id', 'description', 'habit_id'],
+        }
+      ],
     });
 
-    const habit = habitData.map((habit) => habit.get({ plain: true }));
+    const habit = habitData.get({ plain: true });
 
-    res.render('profile', { 
-      habit, 
-      logged_in: req.session.logged_in 
+    res.render('profile', {
+      habit,
     });
   } catch (err) {
     res.status(500).json(err);
